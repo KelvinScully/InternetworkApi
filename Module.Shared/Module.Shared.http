@@ -1,0 +1,6 @@
+@Module.Shared_HostAddress = http://localhost:5079
+
+GET {{Module.Shared_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

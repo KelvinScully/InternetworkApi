@@ -5,6 +5,8 @@ using System.Net.Mime;
 using ACommon.Objects;
 using ACommon.Objects.Account;
 using BusinessLogicLayer.Interfaces;
+using Module.Shared.Objects.Account;
+using Module.Shared.ManualMappings.Account;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Module.Shared.Controllers.V1
@@ -38,13 +40,39 @@ namespace Module.Shared.Controllers.V1
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UserGet([FromQuery] UserDto user)
+        public async Task<IActionResult> UserGet([FromQuery] UserGet user)
         {
-            var result = await _accountBllService.UserGet(user);
+            var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
             if (result.IsSuccessful)
                 return Ok(result);
 
             return NotFound(result);
+        }
+
+        [HttpPost("User")]
+        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UserInsert([FromQuery] UserUpsert user)
+        {
+            //var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
+            //if (result.IsSuccessful)
+            //    return Ok(result);
+
+            return NotFound();
+        }
+
+        [HttpPut("User")]
+        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UserUpdate([FromQuery] UserUpsert user)
+        {
+            //var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
+            //if (result.IsSuccessful)
+            //    return Ok(result);
+
+            return NotFound();
         }
     }
 }

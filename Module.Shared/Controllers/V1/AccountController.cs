@@ -49,11 +49,25 @@ namespace Module.Shared.Controllers.V1
             return NotFound(result);
         }
 
+     //   [HttpGet("User/{userId}")]
+     //   [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
+     //   [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
+     //   [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
+     //   public async Task<IActionResult> UserGet(int userId)
+     //   {
+     //       var user = new UserGet() { UserId = userId };
+     //       var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
+     //       if (result.IsSuccessful)
+     //           return Ok(result);
+     //
+     //       return NotFound(result);
+     //   }
+
         [HttpPost("User")]
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UserInsert([FromQuery] UserUpsert user)
+        public async Task<IActionResult> UserInsert([FromQuery] UserInsert user)
         {
             //var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
             //if (result.IsSuccessful)
@@ -66,7 +80,7 @@ namespace Module.Shared.Controllers.V1
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UserUpdate([FromQuery] UserUpsert user)
+        public async Task<IActionResult> UserUpdate([FromQuery] UserUpdate user)
         {
             //var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
             //if (result.IsSuccessful)

@@ -21,8 +21,14 @@ namespace Module.Shared.Objects.Account
     {
         public int UserId { get; set; }
     }
+    public class UserInsert
+    {
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
+    }
 
-    public class UserUpsert
+    public class UserUpdate
     {
         public int UserId { get; set; }
         public string UserName { get; set; } = string.Empty;

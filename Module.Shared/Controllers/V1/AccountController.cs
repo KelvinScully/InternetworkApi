@@ -1,12 +1,13 @@
-﻿using Asp.Versioning;
+﻿using ACommon.Objects;
+using ACommon.Objects.Account;
+using Asp.Versioning;
+using BusinessLogicLayer.Interfaces;
+using DataAccessLayer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
-using ACommon.Objects;
-using ACommon.Objects.Account;
-using BusinessLogicLayer.Interfaces;
-using Module.Shared.Objects.Account;
 using Module.Shared.ManualMappings.Account;
+using Module.Shared.Objects.Account;
+using System.Net.Mime;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Module.Shared.Controllers.V1
@@ -26,23 +27,18 @@ namespace Module.Shared.Controllers.V1
         /// Service for interacting with account-related Business Logic Layers
         /// </summary>
         private readonly IAccountBllService _accountBllService;
-        
-        
-        /// <summary>
-        /// Controller Constuctor
-        /// </summary>
         public AccountController(IAccountBllService accountBllService)
         {
             _accountBllService = accountBllService;
         }
 
         [HttpGet("User")]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UserGet([FromQuery] UserGet user)
         {
-            var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
+            var result = await _accountBllService.UserGet(new UserDto());
             if (result.IsSuccessful)
                 return Ok(result);
 
@@ -64,9 +60,9 @@ namespace Module.Shared.Controllers.V1
      //   }
 
         [HttpPost("User")]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UserInsert([FromQuery] UserInsert user)
         {
             //var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));
@@ -77,9 +73,9 @@ namespace Module.Shared.Controllers.V1
         }
 
         [HttpPut("User")]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResult<UserDto>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UserUpdate([FromQuery] UserUpdate user)
         {
             //var result = await _accountBllService.UserGet(ManualMapping.ToDto(user));

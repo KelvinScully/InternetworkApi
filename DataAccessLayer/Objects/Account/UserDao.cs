@@ -1,15 +1,18 @@
 ﻿using ACommon.Objects;
+using ACommon.Objects.Account;
 using DataAccessLayer.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using MicrosoftSqlParameter = Microsoft.Data.SqlClient.SqlParameter;
 
 namespace DataAccessLayer.Objects.Account
 {
+    internal interface IUserDao
+    {
+        Task<ApiResult<UserDao>> GetSingleAsync(DataAccessService dal, string storeProcedure, List<Services.SqlParameter> parameters, Dictionary<string, string> expectedColumns);
+    }
 
-    internal class UserDao
+    internal class UserDao : IUserDao
     {
         public int UserId { get; set; }
         public string UserName { get; set; } = string.Empty;
@@ -20,17 +23,68 @@ namespace DataAccessLayer.Objects.Account
         public bool IsEmailVerified { get; set; }
         public bool IsActive { get; set; }
 
-        public async Task<ApiResult<UserDao?>> GetAsync(DataAccessService dal, string storeProcedure, List<SqlParameter> parameters, string[] expectedColumns)
+        public async Task<ApiResult<UserDao>> GetSingleAsync(DataAccessService dal, string storeProcedure, List<Services.SqlParameter> parameters, Dictionary<string, string> expectedColumns)
         {
-            return await dal.ExecuteReaderSingleAsync(storeProcedure, parameters, reader => new UserDao
+            UserDao userDao = new();
+            bool userFound = false;
+
+            try
             {
-                UserId = DataReaderHelper.Get<int>(reader, expectedColumns[0]),
-                UserName = DataReaderHelper.Get<string>(reader, expectedColumns[1]),
-                UserRoles = DataReaderHelper.Get<string>(reader, expectedColumns[2]),
-                UserEmail = DataReaderHelper.Get<string>(reader, expectedColumns[3]),
-                IsEmailVerified = DataReaderHelper.Get<bool>(reader, expectedColumns[4]),
-                IsActive = DataReaderHelper.Get<bool>(reader, expectedColumns[5]),
-            });
+                using (var connection = new SqlConnection(dal.ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    using (var command = new SqlCommand(storeProcedure, connection)) 
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        foreach (var parameter in parameters)
+                        {
+                            command.Parameters.Add(new MicrosoftSqlParameter(parameter.Name, parameter.Value));
+                        }
+                        
+                        using var reader = await command.ExecuteReaderAsync();
+                        while (await reader.ReadAsync())
+                        {
+                            userDao.UserId = DataReaderHelper.Get<int>(reader, expectedColumns["UserId"]);
+                            userDao.UserName = DataReaderHelper.Get<string>(reader, expectedColumns["UserName"]);
+                            userDao.UserRoles = DataReaderHelper.Get<string>(reader, expectedColumns["UserRoles"]);
+                            userDao.UserEmail = DataReaderHelper.Get<string>(reader, expectedColumns["UserEmail"]);
+                            userDao.IsEmailVerified = DataReaderHelper.Get<bool>(reader, expectedColumns["IsEmailVerified"]);
+                            userDao.IsActive = DataReaderHelper.Get<bool>(reader, expectedColumns["IsActive"]);
+
+
+                            userFound = true;
+                        }
+                    }
+                }
+
+                if (userFound)
+                {
+                    return new ApiResult<UserDao>()
+                    {
+                        IsSuccessful = true,
+                        Value = userDao,
+                        Message = "User Found"
+                    };
+                }
+                else
+                {
+                    return new ApiResult<UserDao>()
+                    {
+                        IsSuccessful = false,
+                        Value = userDao,
+                        Message = "User not found with that Id"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResult<UserDao>
+                {
+                    IsSuccessful = false,
+                    Value = new UserDao(),
+                    Message = $"Error in the Database: {ex}"
+                };
+            }
         }
     }
 }

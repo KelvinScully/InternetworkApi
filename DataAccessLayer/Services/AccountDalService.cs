@@ -8,40 +8,44 @@ using ACommon.Objects;
 using ACommon.Objects.Account;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.ManualMappings.Account;
+using ACommon;
 
 namespace DataAccessLayer.Services
 {
     internal class AccountDalService : DataAccessService, IAccountDalService
     {
-        public AccountDalService(string connectionString) : base(connectionString)
-        { }
+        IUserDao _UserDao;
+        public AccountDalService(IUserDao userDao , ConnectionOptions connectionOptions) : base(connectionOptions)
+        {
+            _UserDao = userDao;
+        }
 
         public async Task<ApiResult<UserDto>> SpUserGet(int userId)
         {
-            UserDao user = new();
             string storeProcedure = "account.SpUserGetInfo";
             var parameters = new List<SqlParameter>
             {
                 new("@userId", userId)
             };
-            var expectedColumns = new string[]
+            Dictionary<string, string> expectedColumns = new ()
             {
-                "UserId",
-                "UserName",
-                "UserRoles",
-                "UserEmail",
-                "IsEmailVerified",
-                "IsActive",
+                ["UserId"] = "UserId",
+                ["UserName"] = "UserName",
+                ["UserRoles"] = "UserRoles",
+                ["UserEmail"] = "UserEmail",
+                ["IsEmailVerified"] = "IsEmailVerified",
+                ["IsActive"] = "IsActive",
             };
 
             try
             {
-                var result = await user.GetAsync(this, storeProcedure, parameters, expectedColumns);
+                var result = await _UserDao.GetSingleAsync(this, storeProcedure, parameters, expectedColumns);
                 if (!result.IsSuccessful || result.Value is null)
                 {
                     return new ApiResult<UserDto>
                     {
                         IsSuccessful = false,
+                        Value = new UserDto(),
                         Message = result.Message
                     };
                 }
@@ -52,7 +56,8 @@ namespace DataAccessLayer.Services
                 return new ApiResult<UserDto>
                 {
                     IsSuccessful = false,
-                    Message = $"Unhandled error in SpUserGet: {ex.Message}"
+                    Value = new UserDto(),
+                    Message = $"Unhandled error in '{storeProcedure}': {ex.Message}"
                 };
             }
         }

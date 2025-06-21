@@ -2,21 +2,7 @@
 
 namespace Module.Shared.Objects.Account
 {
-    public class User
-    {
-        public int UserId { get; set; }
-        public string UserName { get; set; } = string.Empty;
-        public List<string> UserRoles { get; set; } = [];
-        public string Password { get; set; } = string.Empty;
-        public string UserEmail { get; set; } = string.Empty;
-        public bool IsEmailVerified { get; set; }
-        public bool IsActive { get; set; }
-        public string ConcatRoles()
-        {
-            return string.Join(", ", UserRoles);
-        }
-    }
-
+    // Requested Objects
     public class UserGet
     {
         public int UserId { get; set; }
@@ -42,4 +28,17 @@ namespace Module.Shared.Objects.Account
             return string.Join(", ", UserRoles);
         }
     }
+
+    // Returned Objects
+    public class User
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string UserRoles { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
+        public bool IsEmailVerified { get; set; }
+        public bool IsActive { get; set; }
+    }
+
 }

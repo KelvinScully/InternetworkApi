@@ -1,14 +1,16 @@
-﻿using System;
+﻿using ACommon.Objects;
+using ACommon.Objects.Account;
+using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.ManualMappings.Account;
+using BusinessLogicLayer.Objects.Account;
+using DataAccessLayer;
+using DataAccessLayer.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Quic;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLayer.Interfaces;
-using BusinessLogicLayer.Interfaces;
-using ACommon.Objects;
-using ACommon.Objects.Account;
-using BusinessLogicLayer.Objects.Account;
-using BusinessLogicLayer.ManualMappings.Account;
 
 namespace BusinessLogicLayer.Services
 {
@@ -27,6 +29,7 @@ namespace BusinessLogicLayer.Services
                 return new ApiResult<UserDto>
                 {
                     IsSuccessful = false,
+                    Value = new UserDto(),
                     Message = "Id is less then or equal to 0"
                 };
 
@@ -39,6 +42,7 @@ namespace BusinessLogicLayer.Services
                     return new ApiResult<UserDto>
                     {
                         IsSuccessful = false,
+                        Value = new UserDto(),
                         Message = $"DAL Failed: {dalResult.Message}"
                     };
                 }
@@ -55,6 +59,7 @@ namespace BusinessLogicLayer.Services
                 return new ApiResult<UserDto>
                 {
                     IsSuccessful = false,
+                    Value = new UserDto(),
                     Message = $"Unhandled Exception: {ex.Message}"
                 };
             }

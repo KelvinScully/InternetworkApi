@@ -11,6 +11,7 @@ namespace DataAccessLayer
         {
             services.AddScoped<IUserDao, UserDao>();
             services.AddScoped<IAccountDalService, AccountDalService>();
+            services.AddScoped<ITestDalService, TestDalService>();
 
             return services;
         }

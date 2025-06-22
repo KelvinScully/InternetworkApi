@@ -14,6 +14,7 @@ namespace BusinessLogicLayer
         public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
         {
             services.AddScoped<IAccountBllService, AccountBllService>();
+            services.AddScoped<ITestBllService, TestBllService>();
             return services;
         }
     }

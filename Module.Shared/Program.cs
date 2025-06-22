@@ -46,7 +46,7 @@ namespace Module.Shared
             });
 
             app.UseHttpsRedirection();
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.MapControllers();
 

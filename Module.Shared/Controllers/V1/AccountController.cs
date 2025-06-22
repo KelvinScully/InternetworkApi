@@ -2,10 +2,8 @@
 using ACommon.Objects.Account;
 using Asp.Versioning;
 using BusinessLogicLayer.Interfaces;
-using DataAccessLayer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Module.Shared.ManualMappings.Account;
 using Module.Shared.Objects.Account;
 using System.Net.Mime;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;

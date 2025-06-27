@@ -7,25 +7,21 @@ using System.Threading.Tasks;
 namespace BusinessLogicLayer.Objects.Account
 {
     // Requested Objects
+    public class Register
+    {
+        public string Username { get; set; } = string.Empty;
+        public string UserPassword { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
+    }
     public class Authenticate
     {
         public string Username { get; set; } = string.Empty;
         public string UserPassword { get; set; } = string.Empty;
     }
+
     public class UserGetById
     {
         public int UserId { get; set; }
-    }
-    public class UserGetByUsernameAndPassword
-    {
-        public string Username { get; set; } = string.Empty;
-        public string UserPassword { get; set; } = string.Empty;
-    }
-    public class UserInsert
-    {
-        public string Username { get; set; } = string.Empty;
-        public string UserPassword { get; set; } = string.Empty;
-        public string UserEmail { get; set; } = string.Empty;
     }
 
 

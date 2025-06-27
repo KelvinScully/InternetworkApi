@@ -28,51 +28,13 @@ namespace Module.Shared.Controllers.V1
             _accountBllService = accountBllService;
         }
 
-        [HttpGet("UserAuthenticate")]
-        [ProducesResponseType(typeof(ApiResult<bool>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResult<bool>), StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Authenticate([FromQuery] Authenticate authenticate)
-        {
-            return NotFound();
-        }
-
-        [Authorize]
-        [HttpGet("UserGetById")]
-        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UserGetById([FromQuery] UserGetById user)
-        {
-            return NotFound();
-        }
-
-        [Authorize]
-        [HttpGet("UsersGetByIds")]
-        [ProducesResponseType(typeof(ApiResult<List<User>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResult<List<User>>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResult<List<User>>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UsersGetByIds([FromQuery] List<UserGetById> user)
-        {
-            return NotFound();
-        }
-
-        [Authorize]
-        [HttpGet("UserGetByUsernameAndPassword")]
-        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UserGetByUsernameAndPassword([FromQuery] UserGetByUsernameAndPassword user)
-        {
-            return NotFound();
-        }
-
-        [HttpPost("User")]
+        [HttpPost("Register")]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UserInsert([FromQuery] UserInsert user)
+        public async Task<IActionResult> Register([FromQuery] Register user)
         {
-            var bllResult = await _accountBllService.UserInsert(user); 
+            var bllResult = await _accountBllService.Register(user);
             switch (bllResult.HttpStatusCode)
             {
                 case ACommon.Objects.StatusCodes.Status200Ok:
@@ -87,14 +49,52 @@ namespace Module.Shared.Controllers.V1
 
         }
 
-        [Authorize]
-        [HttpPut("User")]
+        [HttpGet("Login")]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UserUpdate([FromQuery] UserUpdate user)
+        public async Task<IActionResult> Login([FromQuery] Authenticate user)
         {
-            return NotFound();
+            var bllResult = await _accountBllService.Authenticate(user);
+            switch (bllResult.HttpStatusCode)
+            {
+                case ACommon.Objects.StatusCodes.Status200Ok:
+                    return Ok(bllResult);
+                case ACommon.Objects.StatusCodes.Status400BadRequest:
+                    return BadRequest(bllResult);
+                default:
+                    return NotFound();
+            }
         }
+
+        //[Authorize]
+        //[HttpGet("UserGetById")]
+        //[ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> UserGetById([FromQuery] UserGetById user)
+        //{
+        //    return NotFound();
+        //}
+        //
+        //[Authorize]
+        //[HttpGet("UsersGetByIds")]
+        //[ProducesResponseType(typeof(ApiResult<List<User>>), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(ApiResult<List<User>>), StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(typeof(ApiResult<List<User>>), StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> UsersGetByIds([FromQuery] List<UserGetById> user)
+        //{
+        //    return NotFound();
+        //}
+
+        //[Authorize]
+        //[HttpPut("User")]
+        //[ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> UserUpdate([FromQuery] UserUpdate user)
+        //{
+        //    return NotFound();
+        //}
     }
 }

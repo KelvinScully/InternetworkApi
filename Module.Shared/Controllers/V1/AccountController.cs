@@ -32,7 +32,7 @@ namespace Module.Shared.Controllers.V1
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Register([FromQuery] Register user)
+        public async Task<IActionResult> Register([FromBody] Register user)
         {
             var bllResult = await _accountBllService.Register(user);
             switch (bllResult.HttpStatusCode)
@@ -49,11 +49,11 @@ namespace Module.Shared.Controllers.V1
 
         }
 
-        [HttpGet("Login")]
+        [HttpPost("Login")]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResult<User>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Login([FromQuery] Authenticate user)
+        public async Task<IActionResult> Login([FromBody] Authenticate user)
         {
             var bllResult = await _accountBllService.Authenticate(user);
             switch (bllResult.HttpStatusCode)

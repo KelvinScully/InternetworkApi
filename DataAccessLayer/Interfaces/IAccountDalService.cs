@@ -10,6 +10,12 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IAccountDalService
     {
-        Task<ApiResult<UserDto>> SpUserGet(int userId);
+        Task<ApiResult<bool>> SpAuthenticate(UserDto user);
+        Task<ApiResult<UserDto>> SpUserGetSalt(UserDto user);
+        Task<ApiResult<UserDto>> UserGetById(UserDto users);
+        Task<ApiResult<List<UserDto>>> UsersGetByIds(List<UserDto> users);
+        Task<ApiResult<UserDto>> UserGetByUsernameAndPassword(UserDto users);
+        Task<ApiResult<UserDto>> UserInsert(UserDto user);
+        Task<ApiResult<UserDto>> UserUpdate(UserDto user);
     }
 }

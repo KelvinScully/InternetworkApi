@@ -1,5 +1,6 @@
 ﻿using ACommon.Objects;
 using ACommon.Objects.Account;
+using BusinessLogicLayer.Objects.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace BusinessLogicLayer.Interfaces
 {
     public interface IAccountBllService
     {
-        Task<ApiResult<UserDto>> UserGet(UserDto user);
+        Task<ApiResult<User>> Authenticate(Authenticate user);
+        Task<ApiResult<User>> Register(Register user);
     }
 }

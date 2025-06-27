@@ -10,6 +10,8 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IAccountDalService
     {
-        Task<ApiResult<UserDto>> SpUserGet(int userId);
+        Task<ApiResult<UserDto>> SpUserInsert(UserDto user);
+        Task<ApiResult<UserDto>> SpUserGetByUsername(UserDto users);
+        Task<ApiResult<UserDto>> SpUserGetHashNSalt(UserDto user);
     }
 }
